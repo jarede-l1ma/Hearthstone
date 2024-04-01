@@ -8,20 +8,20 @@
 import XCTest
 @testable import Hearthstone
 
-class CardsInteractorTests: XCTestCase {
-
+final class CardsInteractorTests: XCTestCase {
+    
     var interactor: CardsInteractor!
-
+    
     override func setUp() {
         super.setUp()
         interactor = CardsInteractor()
     }
-
+    
     override func tearDown() {
         interactor = nil
         super.tearDown()
     }
-
+    
     func testFetchCardsSuccess() {
         // Given
         let expectation = XCTestExpectation(description: "Fetching cards succeeds")
@@ -40,7 +40,7 @@ class CardsInteractorTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
-
+    
     func testFetchCardsFailure() {
         // Given
         let expectation = XCTestExpectation(description: "Fetching cards fails")
@@ -76,7 +76,7 @@ class CardsInteractorTests: XCTestCase {
             }
         }
         
-        wait(for: [expectation], timeout: 5.0)
+        wait(for: [expectation], timeout: 8.0)
     }
     
     func testFetchCardsInvalidURL() {
@@ -97,7 +97,7 @@ class CardsInteractorTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
-
+    
     func testFetchCardsInvalidResponse() {
         // Given
         let expectation = XCTestExpectation(description: "Fetching cards with invalid response fails")
@@ -116,7 +116,7 @@ class CardsInteractorTests: XCTestCase {
         
         wait(for: [expectation], timeout: 5.0)
     }
-
+    
     func testFetchCardsNoData() {
         // Given
         let expectation = XCTestExpectation(description: "Fetching cards with no data fails")

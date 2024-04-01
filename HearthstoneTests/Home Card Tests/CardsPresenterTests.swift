@@ -36,7 +36,7 @@ class MockCardsInteractor: CardsInteractorProtocol {
     
 }
 
-class CardsPresenterTests: XCTestCase {
+final class CardsPresenterTests: XCTestCase {
     
     func testViewDidLoad_WhenSuccess_ShouldUpdateViewWithCards() {
         // Given
