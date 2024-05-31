@@ -7,12 +7,11 @@
 
 import UIKit
 
-final class CardsViewController: UIViewController, CardsViewProtocol {
+final class CardsViewController: UIViewController {
     
     //MARK: - Properties
     var presenter: CardsPresenter?
     var interactor = CardsInteractor()
-    lazy var card: [Card] = []
     lazy var currentFaction: String = "Alliance"
     
     lazy var activity: UIActivityIndicatorView = {
@@ -49,8 +48,7 @@ final class CardsViewController: UIViewController, CardsViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter = CardsPresenter(view: self,
-                                   interactor: interactor,
-                                   currentFaction: currentFaction)
+                                   interactor: interactor)
         configureView()
         presenter?.viewDidLoad()
         presenter?.updateViewClosure = {
@@ -76,7 +74,7 @@ final class CardsViewController: UIViewController, CardsViewProtocol {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         DispatchQueue.main.async { [weak self] in
-            UIView.animate(withDuration: 1) {
+            UIView.animate(withDuration: 2.0) {
                 self?.view.isHidden = true
             }
         }
@@ -102,7 +100,7 @@ extension CardsViewController {
     }
     
     @objc private func segmentValueChanged(_ sender: UISegmentedControl) {
-        card = []
+        presenter?.card = []
         tableView.reloadData()
         activity.startAnimating()
         presenter?.segmentValueChanged(index: sender.selectedSegmentIndex)
@@ -110,10 +108,10 @@ extension CardsViewController {
 }
 
 //MARK: - View Update
-extension CardsViewController {
+extension CardsViewController: CardsViewProtocol {
     func updateCards(cards: [Card]) {
         DispatchQueue.main.async {
-            self.card = cards
+            self.presenter?.card = cards
             self.activity.stopAnimating()
             self.tableView.reloadData()
         }
@@ -129,19 +127,21 @@ extension CardsViewController {
 //MARK: - Delegate and DataSource
 extension CardsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return card.count
+        return presenter?.card.count ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "CardsTableViewCell", for: indexPath) as? CardsTableViewCell else { return UITableViewCell() }
-        let card = card[indexPath.row]
-        cell.configure(with: card)
+        if let card = presenter?.card[indexPath.row] {
+            cell.configure(with: card)
+        }
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let selectedCard = card[indexPath.row]
-        let cardDetailVC = CardDetailViewController(card: selectedCard)
-        navigationController?.pushViewController(cardDetailVC, animated: true)
+        if let selectedCard = presenter?.card[indexPath.row] {
+            let cardDetailVC = CardDetailViewController(card: selectedCard)
+            navigationController?.pushViewController(cardDetailVC, animated: true)
+        }
     }
 }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 struct CardsInteractor: CardsInteractorProtocol {
     
@@ -18,7 +19,8 @@ struct CardsInteractor: CardsInteractorProtocol {
     }
     
     // MARK: - Methods
-    func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
-        service.fetchCards(faction: faction, completion: completion)
+    func fetchCards(faction: String) -> AnyPublisher<[Card], Error>  {
+        return service.fetchCards(faction: faction)
+            .eraseToAnyPublisher()
     }
 }

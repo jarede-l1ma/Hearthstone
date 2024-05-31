@@ -6,32 +6,39 @@
 //
 
 import Foundation
+import Combine
 
 final class CardsPresenter: CardsPresenterProtocol {
     
     // MARK: - Properties
+    var card: [Card] = []
     weak var view: CardsViewProtocol?
+    private var cancellable: AnyCancellable?
     var updateViewClosure: (() -> Void)?
     let interactor: CardsInteractorProtocol
     var currentFaction: String = "Alliance"
     
     // MARK: - Initializers
-    init(view: CardsViewProtocol? = nil, interactor: CardsInteractorProtocol, currentFaction: String) {
+    init(view: CardsViewProtocol? = nil, interactor: CardsInteractorProtocol) {
         self.view = view
         self.interactor = interactor
-        self.currentFaction = currentFaction
     }
     
     // MARK: - Methods
     func viewDidLoad() {
-        interactor.fetchCards(faction: currentFaction) { [weak self] result in
-            switch result {
-            case .success(let cards):
-                self?.view?.updateCards(cards: cards)
-            case .failure(let error):
-                self?.view?.showError(error: error)
-            }
-        }
+        cancellable = interactor.fetchCards(faction: currentFaction)
+            .sink(receiveCompletion: { [weak self] completion in
+                guard let self else { return }
+                switch completion {
+                case .finished:
+                    print("finished")
+                case .failure(let error):
+                    self.view?.showError(error: error)
+                }
+            }, receiveValue: { [weak self] cards in
+                guard let self else { return }
+                self.view?.updateCards(cards: cards)
+            })
     }
     
     func segmentValueChanged(index: Int) {
@@ -42,15 +49,20 @@ final class CardsPresenter: CardsPresenterProtocol {
         default: break
         }
         
-        interactor.fetchCards(faction: currentFaction) { [weak self] result in
-            guard let self else { return }
-            switch result {
-            case .success(let cards):
+        cancellable?.cancel()
+        
+        cancellable = interactor.fetchCards(faction: currentFaction)
+            .sink(receiveCompletion: { [weak self] result in
+                guard let self else { return }
+                switch result {
+                case .finished:
+                    updateViewClosure?()
+                case .failure(let error):
+                    self.view?.showError(error: error)
+                }
+            }, receiveValue: { [weak self] cards in
+                guard let self else { return }
                 self.view?.updateCards(cards: cards)
-                updateViewClosure?()
-            case .failure(let error):
-                self.view?.showError(error: error)
-            }
-        }
+            })
     }
 }

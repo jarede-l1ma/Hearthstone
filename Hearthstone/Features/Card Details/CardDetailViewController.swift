@@ -13,9 +13,16 @@ final class CardDetailViewController: UIViewController {
     
     // MARK: - UI Components
     
+    lazy var backgroundView: UIView = {
+        let v = UIView()
+        v.backgroundColor = .clear
+        v.translatesAutoresizingMaskIntoConstraints = false
+        return v
+    }()
     lazy var scrollView: UIScrollView = {
         let s = UIScrollView()
         s.showsHorizontalScrollIndicator = false
+        s.showsVerticalScrollIndicator = false
         s.alwaysBounceHorizontal = false
         s.isDirectionalLockEnabled = true
         s.contentSize = CGSize(width: view.frame.width,
@@ -178,30 +185,29 @@ final class CardDetailViewController: UIViewController {
         
         NSLayoutConstraint.activate([
             
-            scrollView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            scrollView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
-            scrollView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: constraints),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -constraints),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             stackView.topAnchor.constraint(equalTo: scrollView.topAnchor),
-            stackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: constraints),
-            stackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: -constraints),
-            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor),
+            stackView.centerXAnchor.constraint(equalTo: scrollView.centerXAnchor),
             stackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
+            stackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor)
         ])
     }
     
     func updateUI() {
-        nameLabel.text = card.name ?? "Empty name"
-        flavorLabel.text = "Flavor: \(card.flavor ?? "Empty flavor")"
-        descriptionLabel.text = "Description: \(card.text ?? "Empty description")"
-        cardSetLabel.text = "Set: \(card.cardSet ?? "Empty set")"
-        typeLabel.text = "Type: \(card.type ?? "Empty type")"
-        factionLabel.text = "Faction: \(card.faction ?? "Empty faction")"
-        rarityLabel.text = "Rarity: \(card.rarity ?? "Empty rarity")"
-        attackLabel.text = "Attack: \(card.attack ?? 0)"
-        costLabel.text = "Cost: \(card.cost ?? 0)"
-        healthLabel.text = "Health: \(card.health ?? 0)"
+        nameLabel.text = card.name
+        flavorLabel.text = "Flavor: \(card.flavor ?? "Unknown")"
+        descriptionLabel.text = "Description: \(card.text ?? "Unknown")"
+        cardSetLabel.text = "Set: \(card.cardSet ?? "Unknown")"
+        typeLabel.text = "Type: \(card.type ?? "Unknown")"
+        factionLabel.text = "Faction: \(card.faction ?? "Unknown")"
+        rarityLabel.text = "Rarity: \(card.rarity ?? "Unknown")"
+        attackLabel.text = "Attack: \(card.attack.map { String($0) } ?? "Unknown")"
+        costLabel.text = "Cost: \(card.cost.map { String($0) } ?? "Unknown")"
+        healthLabel.text = "Health: \(card.health.map { String($0) } ?? "Unknown")"
         
         if let imageUrlString = card.img,
            let imageUrl = URL(string: imageUrlString) {

@@ -6,47 +6,37 @@
 //
 
 import Foundation
+import Combine
 
 struct CardsService: CardsServiceProtocol {
-    func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
+    
+    func fetchCards(faction: String) -> AnyPublisher<[Card], Error> {
         let urlString = "\(CardsAPI.apiURL)\(faction)"
-        
         guard let url = URL(string: urlString) else {
-            completion(.failure(NSError(domain: "Invalid URL", code: 0)))
-            return
+            return Fail(error: NSError(domain: "Invalid URL", code: 0))
+                .eraseToAnyPublisher()
         }
         
-        let session = URLSession.shared
         var request = URLRequest(url: url)
         request.allHTTPHeaderFields = CardsAPI.headers
         
-        let task = session.dataTask(with: request) { (data, response, error) in
-            
-            if let error = error {
-                completion(.failure(error))
-                return
+        return URLSession.shared.dataTaskPublisher(for: request)
+            .mapError { error -> Error in
+                if let urlError = error as? URLError,
+                   urlError.code == .cancelled {
+                    return NSError(domain: "Cancelled", code: 0)
+                } else {
+                    return error
+                }
             }
-            
-            guard let httpResponse = response as? HTTPURLResponse,
-                  (200...299).contains(httpResponse.statusCode) else {
-                completion(.failure(NSError(domain: "HTTPError", code: 0)))
-                return
+            .tryMap { data, response -> Data in
+                guard let httpResponse = response as? HTTPURLResponse,
+                      (200...299).contains(httpResponse.statusCode) else {
+                    throw URLError(.cancelled) // Or a custom error type
+                }
+                return data
             }
-            
-            guard let data = data else {
-                completion(.failure(NSError(domain: "NoData", code: 0)))
-                return
-            }
-            
-            do {
-                let decoder = JSONDecoder()
-                let decoded = try decoder.decode([Card].self, from: data)
-                
-                completion(.success(decoded))
-            } catch {
-                completion(.failure(error))
-            }
-        }
-        task.resume()
+            .decode(type: [Card].self, decoder: JSONDecoder())
+            .eraseToAnyPublisher()
     }
 }
