@@ -30,7 +30,7 @@ final class CardsViewController: UIViewController {
         tableView.dataSource = self
         tableView.delegate = self
         tableView.rowHeight = 150
-        tableView.register(CardsTableViewCell.self, forCellReuseIdentifier: String(describing: CardsTableViewCell.self))
+        tableView.register(CardsTableViewCell.self, forCellReuseIdentifier: CardsTableViewCell.reusableIdentifier)
         tableView.backgroundView = self.activity
         tableView.tableFooterView = UIView()
         tableView.allowsMultipleSelection = false
@@ -47,7 +47,7 @@ final class CardsViewController: UIViewController {
         presenter?.updateViewClosure = {
             DispatchQueue.main.async {
                 UIView.transition(with: self.view,
-                                  duration: 0.6,
+                                  duration: 1.0,
                                   options: .transitionCrossDissolve,
                                   animations: {
                     self.tableView.reloadData()
@@ -109,7 +109,7 @@ extension CardsViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "CardsTableViewCell", for: indexPath) as? CardsTableViewCell else { return UITableViewCell() }
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CardsTableViewCell.reusableIdentifier, for: indexPath) as? CardsTableViewCell else { return UITableViewCell() }
         if let card = presenter?.card[indexPath.row] {
             cell.configure(with: card)
         }
