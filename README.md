@@ -23,7 +23,7 @@ This app was developed as a demo project to showcase how to consume a RESTful AP
 
 ## Project Architecture
 
-- **Hearthstone**: Contains all the source code of the app.
+  - **Hearthstone**: Contains all the source code of the app.
   - **Controllers**: Contains the view controller classes.
   - **Models**: Contains the data models used in the app.
   - **Views**: Contains custom view classes.
@@ -31,6 +31,7 @@ This app was developed as a demo project to showcase how to consume a RESTful AP
   - **Services**: Contains services responsible for making HTTP requests to the API.
   - **Utilities**: Contains utility and helper classes.
   - **Supporting Files**: Contains configuration files, such as the app information file and asset files.
+  - **Combine:** Introduced for asynchronous data fetching and updates.
 
 ## Technologies Used
 
