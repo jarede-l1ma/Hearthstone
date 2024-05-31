@@ -3,7 +3,7 @@ import XCTest
 
 final class CardsViewProtocolTests: XCTestCase {
 
-    class MockCardsView: CardsViewProtocol {
+    class MockCardsView: CardsViewInterface {
         var updateCardsCalled = false
         var showErrorCalled = false
         
@@ -41,13 +41,13 @@ final class CardsViewProtocolTests: XCTestCase {
 
 class CardsPresenterProtocolTests: XCTestCase {
 
-    class MockCardsInteractor: CardsInteractorProtocol {
+    class MockCardsInteractor: CardsInteractorInterface {
         func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
             
         }
     }
 
-    class MockCardsView: CardsViewProtocol {
+    class MockCardsView: CardsViewInterface {
         func updateCards(cards: [Hearthstone.Card]) {
             
         }
@@ -87,7 +87,7 @@ class CardsPresenterProtocolTests: XCTestCase {
 
 class CardsInteractorProtocolTests: XCTestCase {
 
-    class MockCardsInteractor: CardsInteractorProtocol {
+    class MockCardsInteractor: CardsInteractorInterface {
         func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
             
         }

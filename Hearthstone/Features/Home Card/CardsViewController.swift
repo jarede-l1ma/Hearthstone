@@ -42,7 +42,7 @@ final class CardsViewController: UIViewController {
         super.viewDidLoad()
         presenter = CardsPresenter(view: self,
                                    interactor: interactor)
-        configureView()
+        CardsViewConfigurator().configureView(for: self)
         presenter?.viewDidLoad()
         presenter?.updateViewClosure = {
             DispatchQueue.main.async {
@@ -74,23 +74,8 @@ final class CardsViewController: UIViewController {
     }
 }
 
-//MARK: - View Configuration
+//MARK: - User Interaction
 extension CardsViewController {
-    private func configureView() {
-        view.addSubview(segmentControl)
-        view.addSubview(tableView)
-        
-        NSLayoutConstraint.activate([
-            segmentControl.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            segmentControl.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16.0),
-            segmentControl.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16.0),
-            
-            tableView.topAnchor.constraint(equalTo: segmentControl.bottomAnchor, constant: 16.0),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            tableView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor)
-        ])
-    }
     
     @objc private func segmentValueChanged(_ sender: UISegmentedControl) {
         presenter?.card = []
@@ -101,7 +86,7 @@ extension CardsViewController {
 }
 
 //MARK: - View Update
-extension CardsViewController: CardsViewProtocol {
+extension CardsViewController: CardsViewInterface {
     func updateCards(cards: [Card]) {
         DispatchQueue.main.async {
             self.presenter?.card = cards

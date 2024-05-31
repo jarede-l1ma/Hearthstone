@@ -31,6 +31,8 @@
 		F9A406772BB779EE00644263 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A406762BB779EE00644263 /* AlertHelper.swift */; };
 		F9A4067A2BB8DB5900644263 /* CardsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A406792BB8DB5900644263 /* CardsProtocol.swift */; };
 		F9A4067C2BB8E23800644263 /* CardsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A4067B2BB8E23800644263 /* CardsAPI.swift */; };
+		F9AD29382C0A730B00AC7590 /* ViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AD29372C0A730B00AC7590 /* ViewConfigurator.swift */; };
+		F9AD293A2C0A732400AC7590 /* ViewConfiguratorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AD29392C0A732400AC7590 /* ViewConfiguratorProtocol.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +73,8 @@
 		F9A406762BB779EE00644263 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		F9A406792BB8DB5900644263 /* CardsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsProtocol.swift; sourceTree = "<group>"; };
 		F9A4067B2BB8E23800644263 /* CardsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsAPI.swift; sourceTree = "<group>"; };
+		F9AD29372C0A730B00AC7590 /* ViewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfigurator.swift; sourceTree = "<group>"; };
+		F9AD29392C0A732400AC7590 /* ViewConfiguratorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguratorProtocol.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -232,6 +236,7 @@
 			children = (
 				F9A406742BB7671900644263 /* ImageHelper.swift */,
 				F9A406762BB779EE00644263 /* AlertHelper.swift */,
+				F9AD29372C0A730B00AC7590 /* ViewConfigurator.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -240,6 +245,7 @@
 			isa = PBXGroup;
 			children = (
 				F9A406792BB8DB5900644263 /* CardsProtocol.swift */,
+				F9AD29392C0A732400AC7590 /* ViewConfiguratorProtocol.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -387,8 +393,10 @@
 				F9A406772BB779EE00644263 /* AlertHelper.swift in Sources */,
 				F9A4067C2BB8E23800644263 /* CardsAPI.swift in Sources */,
 				F9A4066A2BB73CBB00644263 /* CardsViewController.swift in Sources */,
+				F9AD293A2C0A732400AC7590 /* ViewConfiguratorProtocol.swift in Sources */,
 				F92A28EE2BBA644D000AD372 /* CardsService.swift in Sources */,
 				F9A4066C2BB73DAA00644263 /* CardsTableViewCell.swift in Sources */,
+				F9AD29382C0A730B00AC7590 /* ViewConfigurator.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

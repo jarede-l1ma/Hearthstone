@@ -1,7 +1,7 @@
 import Foundation
 import Combine
 
-struct CardsService: CardsServiceProtocol {
+struct CardsService: CardsServiceInterface {
     
     func fetchCards(faction: String) -> AnyPublisher<[Card], Error> {
         let urlString = "\(CardsAPI.apiURL)\(faction)"

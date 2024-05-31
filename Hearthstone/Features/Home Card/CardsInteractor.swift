@@ -1,13 +1,13 @@
 import Foundation
 import Combine
 
-struct CardsInteractor: CardsInteractorProtocol {
+struct CardsInteractor: CardsInteractorInterface {
     
     //MARK: - Properties
-    let service: CardsServiceProtocol
+    let service: CardsServiceInterface
     
     // MARK: - Initializers
-    init(service: CardsServiceProtocol = CardsService()) {
+    init(service: CardsServiceInterface = CardsService()) {
         self.service = service
     }
     

@@ -1,18 +1,18 @@
 import Foundation
 import Combine
 
-final class CardsPresenter: CardsPresenterProtocol {
+final class CardsPresenter: CardsPresenterInterface {
     
     // MARK: - Properties
     var card: [Card] = []
-    weak var view: CardsViewProtocol?
+    weak var view: CardsViewInterface?
     private var cancellable: AnyCancellable?
     var updateViewClosure: (() -> Void)?
-    let interactor: CardsInteractorProtocol
+    let interactor: CardsInteractorInterface
     var currentFaction: String = "Alliance"
     
     // MARK: - Initializers
-    init(view: CardsViewProtocol? = nil, interactor: CardsInteractorProtocol) {
+    init(view: CardsViewInterface? = nil, interactor: CardsInteractorInterface) {
         self.view = view
         self.interactor = interactor
     }

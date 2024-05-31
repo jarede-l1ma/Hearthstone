@@ -7,7 +7,7 @@ enum MockError: Error {
     case httpError
 }
 
-class MockCardsView: CardsViewProtocol {
+class MockCardsView: CardsViewInterface {
     var updateCardsCalled = false
     var showErrorCalled = false
     
@@ -20,7 +20,7 @@ class MockCardsView: CardsViewProtocol {
     }
 }
 
-class MockCardsInteractor: CardsInteractorProtocol {
+class MockCardsInteractor: CardsInteractorInterface {
     var fetchCardsStub: Result<[Card], Error> = .success([])
     
     func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {

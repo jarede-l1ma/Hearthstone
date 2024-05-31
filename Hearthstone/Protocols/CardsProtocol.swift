@@ -2,13 +2,13 @@ import Foundation
 import Combine
 
 //MARK: - View Protocols
-protocol CardsViewProtocol: AnyObject {
+protocol CardsViewInterface: AnyObject {
     func updateCards(cards: [Card])
     func showError(error: Error)
 }
 
 //MARK: - Presenter Protocols
-protocol CardsPresenterProtocol {
+protocol CardsPresenterInterface {
     var card: [Card] { get }
     
     func viewDidLoad()
@@ -16,11 +16,11 @@ protocol CardsPresenterProtocol {
 }
 
 //MARK: - Interactor Protocols
-protocol CardsInteractorProtocol {
+protocol CardsInteractorInterface {
     func fetchCards(faction: String) -> AnyPublisher<[Card], Error> 
 }
 
 //MARK: - Service Protocols
-protocol CardsServiceProtocol {
+protocol CardsServiceInterface {
     func fetchCards(faction: String) -> AnyPublisher<[Card], Error>
 }
