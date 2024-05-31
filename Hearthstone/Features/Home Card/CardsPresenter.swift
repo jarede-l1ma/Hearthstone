@@ -31,7 +31,7 @@ final class CardsPresenter: CardsPresenterProtocol {
                 guard let self else { return }
                 switch completion {
                 case .finished:
-                    print("finished")
+                    updateViewClosure?()
                 case .failure(let error):
                     self.view?.showError(error: error)
                 }
