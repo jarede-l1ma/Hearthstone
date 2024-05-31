@@ -38,6 +38,7 @@ This app was developed as a demo project to showcase how to consume a RESTful AP
 - **UIKit**: Framework used to build the user interface.
 - **URLSession**: Framework used to make HTTP requests to the API.
 - **JSONDecoder**: Used to decode the data received from the API into Swift objects.
+- **Combine**: Framework used for handling asynchronous operations with data streams.
 - **XCTest**: Framework used to write unit tests.
 
 ## Contributing
