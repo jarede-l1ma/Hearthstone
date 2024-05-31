@@ -1,10 +1,3 @@
-//
-//  CardsService.swift
-//  Hearthstone
-//
-//  Created by Jarede Lima on 30/04/24.
-//
-
 import Foundation
 import Combine
 
@@ -22,8 +15,7 @@ struct CardsService: CardsServiceProtocol {
         
         return URLSession.shared.dataTaskPublisher(for: request)
             .mapError { error -> Error in
-                if let urlError = error as? URLError,
-                   urlError.code == .cancelled {
+                if error.localizedDescription.contains("cancelled") {
                     return NSError(domain: "Cancelled", code: 0)
                 } else {
                     return error
@@ -32,7 +24,7 @@ struct CardsService: CardsServiceProtocol {
             .tryMap { data, response -> Data in
                 guard let httpResponse = response as? HTTPURLResponse,
                       (200...299).contains(httpResponse.statusCode) else {
-                    throw URLError(.cancelled) // Or a custom error type
+                    throw URLError(.cancelled)
                 }
                 return data
             }

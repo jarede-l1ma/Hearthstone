@@ -1,10 +1,3 @@
-//
-//  AlertHelper.swift
-//  Hearthstone
-//
-//  Created by Jarede Lima on 29/03/24.
-//
-
 import UIKit
 
 final class AlertHelper {

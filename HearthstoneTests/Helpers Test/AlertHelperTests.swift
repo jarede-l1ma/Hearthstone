@@ -1,10 +1,3 @@
-//
-//  AlertHelperTests.swift
-//  HearthstoneTests
-//
-//  Created by Jarede Lima on 31/03/24.
-//
-
 import XCTest
 @testable import Hearthstone
 

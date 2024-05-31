@@ -1,10 +1,3 @@
-//
-//  CardDetailViewController.swift
-//  Hearthstone
-//
-//  Created by Jarede Lima on 31/03/24.
-//
-
 import UIKit
 
 final class CardDetailViewController: UIViewController {

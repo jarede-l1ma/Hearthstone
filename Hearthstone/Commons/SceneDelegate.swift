@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  Hearthstone
-//
-//  Created by Jarede Lima on 29/03/24.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {

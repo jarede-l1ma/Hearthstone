@@ -1,10 +1,3 @@
-//
-//  CardsTableViewCellTests.swift
-//  HearthstoneTests
-//
-//  Created by Jarede Lima on 31/04/24.
-//
-
 import XCTest
 @testable import Hearthstone
 

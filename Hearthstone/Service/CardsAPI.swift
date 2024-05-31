@@ -1,10 +1,3 @@
-//
-//  CardsAPI.swift
-//  Hearthstone
-//
-//  Created by Jarede Lima on 30/03/24.
-//
-
 import Foundation
 
 struct CardsAPI {
