@@ -13,6 +13,7 @@ protocol CardsPresenterInterface {
     
     func viewDidLoad()
     func segmentValueChanged(index: Int)
+    func didSelectCard(_ card: Card)
 }
 
 //MARK: - Interactor Protocols

@@ -1,66 +1,62 @@
-import XCTest
+import Testing
+import UIKit
 @testable import Hearthstone
 
-final class ImageHelperTests: XCTestCase {
+struct ImageHelperTests {
     
-    func testImageForURL_WhenNoImageCached_ShouldReturnNotNil() {
+    @Test func imageForURL_WhenNoImageCached_ShouldReturnNil() {
         // Given
-        let url = URL(string: "https://example.com/image.png")!
+        let url = URL(string: "https://example.com/no-image-cached-\(UUID().uuidString).png")!
         
         // When
         let image = ImageHelper.shared.image(for: url)
         
         // Then
-        XCTAssertNotNil(image)
+        #expect(image == nil)
     }
     
-    func testCacheImageForURL_WhenImageCached_ShouldReturnCachedImage() {
+    @Test func cacheImageForURL_WhenImageCached_ShouldReturnCachedImage() {
         // Given
-        let url = URL(string: "https://example.com/image.png")!
-        let testImage = UIImage(named: "testImage")
-        ImageHelper.shared.cache(image: testImage ?? UIImage(), for: url)
+        let url = URL(string: "https://example.com/cached-image-\(UUID().uuidString).png")!
+        let testImage = UIImage(systemName: "camera") ?? UIImage()
+        
+        ImageHelper.shared.cache(image: testImage, for: url)
         
         // When
         let cachedImage = ImageHelper.shared.image(for: url)
         
         // Then
-        if let cachedImage = cachedImage {
-            XCTAssertEqual(testImage?.pngData(), cachedImage.pngData(), "Cached image should be equal to test image")
-        } else {
-            let systemImage = UIImage(systemName: "photo.artframe.circle.fill")?.withTintColor(.systemGray)
-            XCTAssertEqual(cachedImage, systemImage, "Cached image should be system image when nil")
-        }
+        #expect(cachedImage != nil)
+        #expect(testImage.pngData() == cachedImage?.pngData())
     }
     
-    func testLoadImageFromURL_WhenValidURL_ShouldLoadImage() {
+    @Test func loadImageFromURL_WhenValidURL_ShouldLoadImage() async {
         // Given
-        let url = URL(string: "https://example.com/image.png")!
-        let expectation = XCTestExpectation(description: "Load image from URL")
+        let url = URL(string: "https://art.hearthstonejson.com/v1/render/latest/enUS/512x/EX1_298.png")!
         
         // When
-        ImageHelper.shared.loadImage(from: url) { (image) in
-            // Then
-            XCTAssertNotNil(image)
-            expectation.fulfill()
+        let image: UIImage? = await withCheckedContinuation { continuation in
+            ImageHelper.shared.loadImage(from: url) { img in
+                continuation.resume(returning: img)
+            }
         }
         
-        // Wait for expectation
-        wait(for: [expectation], timeout: 5.0)
+        // Then
+        #expect(image != nil)
     }
     
-    func testLoadImageFromURL_WhenInvalidURL_ShouldNotLoadImage() {
+    @Test func loadImageFromURL_WhenInvalidURL_ShouldNotLoadImage() async {
         // Given
-        let url = URL(string: "https://example.com/invalid-url")!
-        let expectation = XCTestExpectation(description: "Attempt to load image from invalid URL")
+        let url = URL(string: "https://invalid-url-that-does-not-exist-\(UUID().uuidString).com/img.png")!
         
         // When
-        ImageHelper.shared.loadImage(from: url) { (image) in
-            // Then
-            XCTAssertNil(image)
-            expectation.fulfill()
+        let image: UIImage? = await withCheckedContinuation { continuation in
+            ImageHelper.shared.loadImage(from: url) { img in
+                continuation.resume(returning: img)
+            }
         }
         
-        // Wait for expectation
-        wait(for: [expectation], timeout: 5.0)
+        // Then
+        #expect(image == nil)
     }
 }

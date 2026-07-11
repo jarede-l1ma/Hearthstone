@@ -4,14 +4,12 @@ final class CardsViewController: UIViewController {
     
     //MARK: - Properties
     var presenter: CardsPresenter?
-    var interactor = CardsInteractor()
-    lazy var currentFaction: String = "Alliance"
     
     lazy var activity: UIActivityIndicatorView = {
         let a = UIActivityIndicatorView(style: .large)
+        a.color = UIColor(red: 244/255, green: 196/255, blue: 48/255, alpha: 1.0)
         a.hidesWhenStopped = true
         a.startAnimating()
-        
         return a
     }()
     
@@ -20,7 +18,12 @@ final class CardsViewController: UIViewController {
         s.selectedSegmentIndex = 0
         s.addTarget(self, action: #selector(segmentValueChanged), for: .valueChanged)
         s.translatesAutoresizingMaskIntoConstraints = false
-        
+        s.backgroundColor = UIColor(red: 38/255, green: 30/255, blue: 26/255, alpha: 1.0)
+        s.selectedSegmentTintColor = UIColor(red: 244/255, green: 196/255, blue: 48/255, alpha: 1.0)
+        s.setTitleTextAttributes([.foregroundColor: UIColor(red: 25/255, green: 20/255, blue: 18/255, alpha: 1.0),
+                                  .font: UIFont.systemFont(ofSize: 14, weight: .bold)], for: .selected)
+        s.setTitleTextAttributes([.foregroundColor: UIColor(white: 0.8, alpha: 1.0),
+                                  .font: UIFont.systemFont(ofSize: 14, weight: .medium)], for: .normal)
         return s
     }()
     
@@ -34,17 +37,31 @@ final class CardsViewController: UIViewController {
         tableView.backgroundView = self.activity
         tableView.tableFooterView = UIView()
         tableView.allowsMultipleSelection = false
+        tableView.backgroundColor = .clear
+        tableView.separatorStyle = .none
         return tableView
     }()
     
     //MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
-        presenter = CardsPresenter(view: self,
-                                   interactor: interactor)
+        
+        view.backgroundColor = UIColor(red: 25/255, green: 20/255, blue: 18/255, alpha: 1.0)
+        title = "Hearthstone"
+        
+        if let navigationBar = navigationController?.navigationBar {
+            navigationBar.barTintColor = UIColor(red: 25/255, green: 20/255, blue: 18/255, alpha: 1.0)
+            navigationBar.tintColor = UIColor(red: 244/255, green: 196/255, blue: 48/255, alpha: 1.0)
+            navigationBar.titleTextAttributes = [
+                .foregroundColor: UIColor(red: 244/255, green: 196/255, blue: 48/255, alpha: 1.0),
+                .font: UIFont.systemFont(ofSize: 22, weight: .bold)
+            ]
+        }
+        
         CardsViewConfigurator().configureView(for: self)
         presenter?.viewDidLoad()
-        presenter?.updateViewClosure = {
+        presenter?.updateViewClosure = { [weak self] in
+            guard let self else { return }
             DispatchQueue.main.async {
                 UIView.transition(with: self.view,
                                   duration: 1.0,
@@ -58,7 +75,6 @@ final class CardsViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        view.isHidden = false
         if let selectedIndexPath = tableView.indexPathForSelectedRow {
             tableView.deselectRow(at: selectedIndexPath, animated: animated)
         }
@@ -66,11 +82,6 @@ final class CardsViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        DispatchQueue.main.async { [weak self] in
-            UIView.animate(withDuration: 2.0) {
-                self?.view.isHidden = true
-            }
-        }
     }
 }
 
@@ -118,8 +129,7 @@ extension CardsViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedCard = presenter?.card[indexPath.row] {
-            let cardDetailVC = CardDetailViewController(card: selectedCard)
-            navigationController?.pushViewController(cardDetailVC, animated: true)
+            presenter?.didSelectCard(selectedCard)
         }
     }
 }

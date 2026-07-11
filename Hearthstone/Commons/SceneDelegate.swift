@@ -6,7 +6,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
-        let cardVC = CardsViewController()
+        let cardVC = CardsModuleBuilder.build()
         let navController = UINavigationController(rootViewController: cardVC)
         
         window = UIWindow(windowScene: windowScene)

@@ -1,7 +1,9 @@
-import XCTest
+import Testing
+import Combine
+import Foundation
 @testable import Hearthstone
 
-final class CardsViewProtocolTests: XCTestCase {
+@Suite @MainActor struct CardsViewProtocolTests {
 
     class MockCardsView: CardsViewInterface {
         var updateCardsCalled = false
@@ -16,7 +18,7 @@ final class CardsViewProtocolTests: XCTestCase {
         }
     }
 
-    func testUpdateCards_WhenCalled_ShouldSetUpdateCardsCalledToTrue() {
+    @Test func updateCards_WhenCalled_ShouldSetUpdateCardsCalledToTrue() {
         // Given
         let mockView = MockCardsView()
         
@@ -24,10 +26,10 @@ final class CardsViewProtocolTests: XCTestCase {
         mockView.updateCards(cards: [])
         
         // Then
-        XCTAssertTrue(mockView.updateCardsCalled)
+        #expect(mockView.updateCardsCalled)
     }
     
-    func testShowError_WhenCalled_ShouldSetShowErrorCalledToTrue() {
+    @Test func showError_WhenCalled_ShouldSetShowErrorCalledToTrue() {
         // Given
         let mockView = MockCardsView()
         
@@ -35,74 +37,67 @@ final class CardsViewProtocolTests: XCTestCase {
         mockView.showError(error: NSError(domain: "", code: 0, userInfo: nil))
         
         // Then
-        XCTAssertTrue(mockView.showErrorCalled)
+        #expect(mockView.showErrorCalled)
     }
 }
 
-class CardsPresenterProtocolTests: XCTestCase {
+@Suite @MainActor struct CardsPresenterProtocolTests {
 
     class MockCardsInteractor: CardsInteractorInterface {
-        func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
-            
+        func fetchCards(faction: String) -> AnyPublisher<[Card], Error> {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
     }
 
     class MockCardsView: CardsViewInterface {
-        func updateCards(cards: [Hearthstone.Card]) {
-            
-        }
-        
-        func showError(error: Error) {
-            
-        }
-        
+        func updateCards(cards: [Hearthstone.Card]) {}
+        func showError(error: Error) {}
+    }
+    
+    class MockCardsRouter: CardsRouterInterface {
+        func navigateToDetail(with card: Card) {}
     }
 
-    func testViewDidLoad_WhenCalled_ShouldNotCrash() {
+    @Test func viewDidLoad_WhenCalled_ShouldNotCrash() {
         // Given
         let interactor = MockCardsInteractor()
         let view = MockCardsView()
-        let presenter = CardsPresenter(view: view, interactor: interactor, currentFaction: "")
+        let router = MockCardsRouter()
+        let presenter = CardsPresenter(view: view, interactor: interactor, router: router)
         
         // When
         presenter.viewDidLoad()
-        
-        // Then
-        // Se não houver crashes, o teste é bem-sucedido
     }
     
-    func testSegmentValueChanged_WhenCalled_ShouldNotCrash() {
+    @Test func segmentValueChanged_WhenCalled_ShouldNotCrash() {
         // Given
         let interactor = MockCardsInteractor()
         let view = MockCardsView()
-        let presenter = CardsPresenter(view: view, interactor: interactor, currentFaction: "")
+        let router = MockCardsRouter()
+        let presenter = CardsPresenter(view: view, interactor: interactor, router: router)
         
         // When
         presenter.segmentValueChanged(index: 0)
-        
-        // Then
-        // Se não houver crashes, o teste é bem-sucedido
     }
 }
 
-class CardsInteractorProtocolTests: XCTestCase {
+@Suite struct CardsInteractorProtocolTests {
 
     class MockCardsInteractor: CardsInteractorInterface {
-        func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
-            
+        func fetchCards(faction: String) -> AnyPublisher<[Card], Error> {
+            return Just([])
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
     }
 
-    func testFetchCards_WhenCalled_ShouldNotCrash() {
+    @Test func fetchCards_WhenCalled_ShouldNotCrash() {
         // Given
         let interactor = MockCardsInteractor()
         
         // When
-        interactor.fetchCards(faction: "Alliance") { _ in
-            
-        }
-        
-        // Then
-        
+        _ = interactor.fetchCards(faction: "Alliance")
     }
 }

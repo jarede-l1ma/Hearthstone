@@ -1,12 +1,12 @@
-import XCTest
+import Testing
+import UIKit
 @testable import Hearthstone
 
-final class CardDetailViewControllerTests: XCTestCase {
+@Suite @MainActor struct CardDetailViewControllerTests {
 
-    var sut: CardDetailViewController!
+    let sut: CardDetailViewController
 
-    override func setUp() {
-        super.setUp()
+    init() {
         let card = Card(name: "Test Card",
                         img: nil,
                         flavor: "Flavor text",
@@ -22,52 +22,47 @@ final class CardDetailViewControllerTests: XCTestCase {
         _ = sut.view
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
+    @Test func cardDetailViewController_WhenLoaded_ImageViewExists() {
+        #expect(sut.cardImageView != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_ImageViewExists() {
-        XCTAssertNotNil(sut.cardImageView)
+    @Test func cardDetailViewController_WhenLoaded_NameLabelExists() {
+        #expect(sut.nameLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_NameLabelExists() {
-        XCTAssertNotNil(sut.nameLabel)
+    @Test func cardDetailViewController_WhenLoaded_FlavorLabelExists() {
+        #expect(sut.flavorLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_FlavorLabelExists() {
-        XCTAssertNotNil(sut.flavorLabel)
+    @Test func cardDetailViewController_WhenLoaded_DescriptionLabelExists() {
+        #expect(sut.descriptionLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_DescriptionLabelExists() {
-        XCTAssertNotNil(sut.descriptionLabel)
+    @Test func cardDetailViewController_WhenLoaded_CardSetLabelExists() {
+        #expect(sut.cardSetLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_CardSetLabelExists() {
-        XCTAssertNotNil(sut.cardSetLabel)
+    @Test func cardDetailViewController_WhenLoaded_TypeLabelExists() {
+        #expect(sut.typeLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_TypeLabelExists() {
-        XCTAssertNotNil(sut.typeLabel)
+    @Test func cardDetailViewController_WhenLoaded_FactionLabelExists() {
+        #expect(sut.factionLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_FactionLabelExists() {
-        XCTAssertNotNil(sut.factionLabel)
+    @Test func cardDetailViewController_WhenLoaded_RarityLabelExists() {
+        #expect(sut.rarityLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_RarityLabelExists() {
-        XCTAssertNotNil(sut.rarityLabel)
+    @Test func cardDetailViewController_WhenLoaded_AttackLabelExists() {
+        #expect(sut.attackLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_AttackLabelExists() {
-        XCTAssertNotNil(sut.attackLabel)
+    @Test func cardDetailViewController_WhenLoaded_CostLabelExists() {
+        #expect(sut.costLabel != nil)
     }
 
-    func testCardDetailViewController_WhenLoaded_CostLabelExists() {
-        XCTAssertNotNil(sut.costLabel)
-    }
-
-    func testCardDetailViewController_WhenLoaded_HealthLabelExists() {
-        XCTAssertNotNil(sut.healthLabel)
+    @Test func cardDetailViewController_WhenLoaded_HealthLabelExists() {
+        #expect(sut.healthLabel != nil)
     }
 }

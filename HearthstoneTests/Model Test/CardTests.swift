@@ -1,10 +1,11 @@
-import XCTest
+import Testing
+import Foundation
 @testable import Hearthstone
 
-final class CardTests: XCTestCase {
+struct CardTests {
 
     // Test decoding with invalid JSON data
-    func testCard_WhenDecodedWithInvalidData_ShouldThrowError() {
+    @Test func card_WhenDecodedWithInvalidData_ShouldThrowError() {
         // Given
         let invalidJSONString = """
             {
@@ -24,11 +25,13 @@ final class CardTests: XCTestCase {
         let invalidJSONData = invalidJSONString.data(using: .utf8)!
         
         // When & Then
-        XCTAssertThrowsError(try JSONDecoder().decode(Card.self, from: invalidJSONData))
+        #expect(throws: Error.self) {
+            try JSONDecoder().decode(Card.self, from: invalidJSONData)
+        }
     }
 
     // Test decoding with missing fields
-    func testCard_WhenDecodedWithMissingFields_ShouldReturnNilValues() {
+    @Test func card_WhenDecodedWithMissingFields_ShouldReturnNilValues() throws {
         // Given
         let jsonString = """
             {
@@ -39,23 +42,19 @@ final class CardTests: XCTestCase {
         let jsonData = jsonString.data(using: .utf8)!
         
         // When
-        do {
-            let card = try JSONDecoder().decode(Card.self, from: jsonData)
-            
-            // Then
-            XCTAssertEqual(card.name, "Test Card")
-            XCTAssertNil(card.img)
-            XCTAssertNil(card.flavor)
-            XCTAssertNil(card.text)
-            XCTAssertNil(card.cardSet)
-            XCTAssertEqual(card.type, "Minion")
-            XCTAssertNil(card.faction)
-            XCTAssertNil(card.rarity)
-            XCTAssertNil(card.attack)
-            XCTAssertNil(card.cost)
-            XCTAssertNil(card.health)
-        } catch {
-            XCTFail("Failed to decode Card: \(error)")
-        }
+        let card = try JSONDecoder().decode(Card.self, from: jsonData)
+        
+        // Then
+        #expect(card.name == "Test Card")
+        #expect(card.img == nil)
+        #expect(card.flavor == nil)
+        #expect(card.text == nil)
+        #expect(card.cardSet == nil)
+        #expect(card.type == "Minion")
+        #expect(card.faction == nil)
+        #expect(card.rarity == nil)
+        #expect(card.attack == nil)
+        #expect(card.cost == nil)
+        #expect(card.health == nil)
     }
 }

@@ -1,21 +1,16 @@
-import XCTest
+import Testing
+import UIKit
 @testable import Hearthstone
 
-final class CardsTableViewCellTests: XCTestCase {
+@Suite @MainActor struct CardsTableViewCellTests {
     
-    var cell: CardsTableViewCell!
+    let cell: CardsTableViewCell
     
-    override func setUp() {
-        super.setUp()
+    init() {
         cell = CardsTableViewCell(style: .default, reuseIdentifier: "Cell")
     }
     
-    override func tearDown() {
-        cell = nil
-        super.tearDown()
-    }
-    
-    func testConfigureWithCard() {
+    @Test func configureWithCard() {
         // Given
         let card = Card(name: "Test Card", img: "test_image_url", flavor: "Test Flavor", text: "Test Text", cardSet: "Test Set", type: "Test Type", faction: "Test Faction", rarity: "Test Rarity", attack: 1, cost: 1, health: 1)
         
@@ -23,20 +18,20 @@ final class CardsTableViewCellTests: XCTestCase {
         cell.configure(with: card)
         
         // Then
-        XCTAssertEqual(cell.cardNameLabel.text, "Test Card")
-        XCTAssertEqual(cell.activityIndicator.isAnimating, true)
+        #expect(cell.cardNameLabel.text == "Test Card")
+        #expect(cell.activityIndicator.isAnimating)
     }
     
-    func testPrepareForReuse() {
+    @Test func prepareForReuse() {
         // Given
         cell.cardNameLabel.text = "Test"
-        cell.cardImageView.image = UIImage(named: "test_image")
+        cell.cardImageView.image = UIImage(systemName: "photo")
         
         // When
         cell.prepareForReuse()
         
         // Then
-        XCTAssertEqual(cell.cardNameLabel.text, "")
-        XCTAssertEqual(cell.cardImageView.image, nil)
+        #expect(cell.cardNameLabel.text == "")
+        #expect(cell.cardImageView.image == nil)
     }
 }

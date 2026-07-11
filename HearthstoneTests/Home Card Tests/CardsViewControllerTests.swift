@@ -1,49 +1,42 @@
-import XCTest
+import Testing
+import UIKit
 @testable import Hearthstone
 
-final class CardsViewControllerTests: XCTestCase {
+@Suite @MainActor struct CardsViewControllerTests {
     
-    var sut: CardsViewController!
+    let sut: CardsViewController
     
-    override func setUp() {
-        super.setUp()
-        sut = CardsViewController()
+    init() {
+        sut = CardsModuleBuilder.build() as! CardsViewController
         sut.loadViewIfNeeded()
     }
     
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-    
-    func testGivenCardsViewController_WhenViewDidLoad_ThenPresenterIsInitialized() {
-        // Given
+    @Test func givenCardsViewController_WhenViewDidLoad_ThenPresenterIsInitialized() {
         // When
         sut.viewDidLoad()
         // Then
-        XCTAssertNotNil(sut.presenter)
+        #expect(sut.presenter != nil)
     }
     
-    func testGivenCardsViewController_WhenViewDidLoad_ThenConfiguresView() {
-        // Given
+    @Test func givenCardsViewController_WhenViewDidLoad_ThenConfiguresView() {
         // When
         sut.viewDidLoad()
         // Then
-        XCTAssertEqual(sut.segmentControl.numberOfSegments, 3)
-        XCTAssertEqual(sut.segmentControl.selectedSegmentIndex, 0)
-        XCTAssertEqual(sut.tableView.rowHeight, 150)
-        XCTAssertNotNil(sut.tableView.dataSource)
-        XCTAssertNotNil(sut.tableView.delegate)
+        #expect(sut.segmentControl.numberOfSegments == 3)
+        #expect(sut.segmentControl.selectedSegmentIndex == 0)
+        #expect(sut.tableView.rowHeight == 150)
+        #expect(sut.tableView.dataSource != nil)
+        #expect(sut.tableView.delegate != nil)
     }
     
-    func testGivenCardsViewController_WhenSegmentValueChanged_ThenUpdatesCard() {
+    @Test func givenCardsViewController_WhenSegmentValueChanged_ThenUpdatesCard() {
         // Given
         let segmentIndex = 1
         // When
         sut.segmentControl.selectedSegmentIndex = segmentIndex
         sut.segmentControl.sendActions(for: .valueChanged)
         // Then
-        XCTAssertTrue(sut.card.isEmpty)
-        XCTAssertTrue(sut.tableView.numberOfRows(inSection: 0) == 0)
+        #expect(sut.presenter?.card.isEmpty ?? true)
+        #expect(sut.tableView.numberOfRows(inSection: 0) == 0)
     }
 }

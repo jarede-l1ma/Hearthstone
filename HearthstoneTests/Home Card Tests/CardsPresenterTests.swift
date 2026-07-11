@@ -1,4 +1,6 @@
-import XCTest
+import Testing
+import Combine
+import Foundation
 @testable import Hearthstone
 
 enum MockError: Error {
@@ -7,85 +9,134 @@ enum MockError: Error {
     case httpError
 }
 
-class MockCardsView: CardsViewInterface {
+@MainActor class MockCardsView: CardsViewInterface {
     var updateCardsCalled = false
     var showErrorCalled = false
+    var cardsReceived: [Card] = []
+    var errorReceived: Error?
     
     func updateCards(cards: [Card]) {
         updateCardsCalled = true
+        cardsReceived = cards
     }
     
     func showError(error: Error) {
         showErrorCalled = true
+        errorReceived = error
     }
 }
 
 class MockCardsInteractor: CardsInteractorInterface {
-    var fetchCardsStub: Result<[Card], Error> = .success([])
+    var result: Result<[Card], Error> = .success([])
     
-    func fetchCards(faction: String, completion: @escaping (Result<[Card], Error>) -> Void) {
-        completion(fetchCardsStub)
+    func fetchCards(faction: String) -> AnyPublisher<[Card], Error> {
+        return result.publisher.eraseToAnyPublisher()
     }
-    
 }
 
-final class CardsPresenterTests: XCTestCase {
+class MockCardsRouter: CardsRouterInterface {
+    var navigateToDetailCalled = false
+    var cardPassed: Card?
     
-    func testViewDidLoad_WhenSuccess_ShouldUpdateViewWithCards() {
+    func navigateToDetail(with card: Card) {
+        navigateToDetailCalled = true
+        cardPassed = card
+    }
+}
+
+@Suite @MainActor struct CardsPresenterTests {
+    
+    @Test func viewDidLoad_WhenSuccess_ShouldUpdateViewWithCards() async {
         // Given
         let mockView = MockCardsView()
         let mockInteractor = MockCardsInteractor()
-        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, currentFaction: "Alliance")
+        let mockRouter = MockCardsRouter()
+        mockInteractor.result = .success([Card(name: "Test Card", img: nil, flavor: nil, text: nil, cardSet: nil, type: nil, faction: nil, rarity: nil, attack: nil, cost: nil, health: nil)])
+        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, router: mockRouter)
         
         // When
         presenter.viewDidLoad()
         
+        // Yield to allow main queue blocks to run
+        try? await Task.sleep(nanoseconds: 50_000_000) // 0.05s
+        
         // Then
-        XCTAssertTrue(mockView.updateCardsCalled, "Update cards should be called")
-        XCTAssertFalse(mockView.showErrorCalled, "Show error should not be called")
+        #expect(mockView.updateCardsCalled)
+        #expect(!mockView.showErrorCalled)
+        #expect(mockView.cardsReceived.first?.name == "Test Card")
     }
     
-    func testViewDidLoad_WhenFailure_ShouldShowError() {
+    @Test func viewDidLoad_WhenFailure_ShouldShowError() async {
         // Given
         let mockView = MockCardsView()
         let mockInteractor = MockCardsInteractor()
-        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, currentFaction: "Alliance")
-        mockInteractor.fetchCardsStub = .failure(MockError.decodingError)
+        let mockRouter = MockCardsRouter()
+        mockInteractor.result = .failure(MockError.decodingError)
+        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, router: mockRouter)
         
         // When
         presenter.viewDidLoad()
         
+        // Yield to allow main queue blocks to run
+        try? await Task.sleep(nanoseconds: 50_000_000) // 0.05s
+        
         // Then
-        XCTAssertFalse(mockView.updateCardsCalled, "Update cards should not be called")
-        XCTAssertTrue(mockView.showErrorCalled, "Show error should be called")
+        #expect(!mockView.updateCardsCalled)
+        #expect(mockView.showErrorCalled)
     }
     
-    func testSegmentValueChanged_ShouldUpdateViewWithCards() {
+    @Test func segmentValueChanged_ShouldUpdateViewWithCards() async {
         // Given
         let mockView = MockCardsView()
         let mockInteractor = MockCardsInteractor()
-        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, currentFaction: "Alliance")
+        let mockRouter = MockCardsRouter()
+        mockInteractor.result = .success([Card(name: "Horde Card", img: nil, flavor: nil, text: nil, cardSet: nil, type: nil, faction: nil, rarity: nil, attack: nil, cost: nil, health: nil)])
+        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, router: mockRouter)
         
         // When
         presenter.segmentValueChanged(index: 1)
         
+        // Yield to allow main queue blocks to run
+        try? await Task.sleep(nanoseconds: 50_000_000) // 0.05s
+        
         // Then
-        XCTAssertTrue(mockView.updateCardsCalled, "Update cards should be called")
-        XCTAssertFalse(mockView.showErrorCalled, "Show error should not be called")
+        #expect(mockView.updateCardsCalled)
+        #expect(!mockView.showErrorCalled)
+        #expect(mockView.cardsReceived.first?.name == "Horde Card")
     }
     
-    func testSegmentValueChanged_ShouldShowError() {
+    @Test func segmentValueChanged_ShouldShowError() async {
         // Given
         let mockView = MockCardsView()
         let mockInteractor = MockCardsInteractor()
-        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, currentFaction: "Alliance")
-        mockInteractor.fetchCardsStub = .failure(MockError.decodingError)
+        let mockRouter = MockCardsRouter()
+        mockInteractor.result = .failure(MockError.decodingError)
+        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, router: mockRouter)
         
         // When
         presenter.segmentValueChanged(index: 1)
         
+        // Yield to allow main queue blocks to run
+        try? await Task.sleep(nanoseconds: 50_000_000) // 0.05s
+        
         // Then
-        XCTAssertFalse(mockView.updateCardsCalled, "Update cards should not be called")
-        XCTAssertTrue(mockView.showErrorCalled, "Show error should be called")
+        #expect(!mockView.updateCardsCalled)
+        #expect(mockView.showErrorCalled)
+    }
+    
+    @Test func didSelectCard_ShouldNavigateToDetail() {
+        // Given
+        let mockView = MockCardsView()
+        let mockInteractor = MockCardsInteractor()
+        let mockRouter = MockCardsRouter()
+        let presenter = CardsPresenter(view: mockView, interactor: mockInteractor, router: mockRouter)
+        let selectedCard = Card(name: "Select Card", img: nil, flavor: nil, text: nil, cardSet: nil, type: nil, faction: nil, rarity: nil, attack: nil, cost: nil, health: nil)
+        
+        // When
+        presenter.didSelectCard(selectedCard)
+        
+        // Then
+        #expect(mockRouter.navigateToDetailCalled)
+        #expect(mockRouter.cardPassed?.name == "Select Card")
     }
 }

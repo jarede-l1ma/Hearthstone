@@ -1,131 +1,77 @@
-import XCTest
+import Testing
+import Combine
+import Foundation
 @testable import Hearthstone
 
-final class CardsInteractorTests: XCTestCase {
+struct CardsInteractorTests {
     
-    var interactor: CardsInteractor!
-    
-    override func setUp() {
-        super.setUp()
-        interactor = CardsInteractor()
-    }
-    
-    override func tearDown() {
-        interactor = nil
-        super.tearDown()
-    }
-    
-    func testFetchCardsSuccess() {
+    @Test func fetchCardsSuccess() async {
         // Given
-        let expectation = XCTestExpectation(description: "Fetching cards succeeds")
+        let interactor = CardsInteractor()
+        var cancellables = Set<AnyCancellable>()
         
         // When
-        interactor.fetchCards(faction: "Alliance") { result in
-            // Then
-            switch result {
-            case .success(let cards):
-                XCTAssertFalse(cards.isEmpty)
-                expectation.fulfill()
-            case .failure:
-                XCTFail("Fetching cards failed unexpectedly")
-            }
+        let cards: [Card]? = await withCheckedContinuation { continuation in
+            interactor.fetchCards(faction: "Alliance")
+                .sink(receiveCompletion: { completion in
+                    if case .failure = completion {
+                        continuation.resume(returning: nil)
+                    }
+                }, receiveValue: { resultCards in
+                    continuation.resume(returning: resultCards)
+                })
+                .store(in: &cancellables)
         }
         
-        wait(for: [expectation], timeout: 5.0)
+        // Then
+        #expect(cards != nil)
+        #expect(cards?.isEmpty == false)
+        #expect(cards?.first?.faction == "Alliance")
     }
     
-    func testFetchCardsFailure() {
+    @Test func fetchCardsFailure_ReturnsFallbackData() async {
         // Given
-        let expectation = XCTestExpectation(description: "Fetching cards fails")
+        let interactor = CardsInteractor()
+        var cancellables = Set<AnyCancellable>()
         
         // When
-        interactor.fetchCards(faction: "InvalidFaction") { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Fetching cards succeeded unexpectedly")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
+        let cards: [Card]? = await withCheckedContinuation { continuation in
+            interactor.fetchCards(faction: "InvalidFaction")
+                .sink(receiveCompletion: { completion in
+                    if case .failure = completion {
+                        continuation.resume(returning: nil)
+                    }
+                }, receiveValue: { resultCards in
+                    continuation.resume(returning: resultCards)
+                })
+                .store(in: &cancellables)
         }
         
-        wait(for: [expectation], timeout: 5.0)
+        // Then
+        #expect(cards != nil)
+        #expect(cards?.isEmpty == false)
     }
     
-    func testFetchCardsEmptyFaction() {
+    @Test func fetchCardsEmptyFaction_ReturnsFallbackData() async {
         // Given
-        let expectation = XCTestExpectation(description: "Fetching cards with empty faction fails")
+        let interactor = CardsInteractor()
+        var cancellables = Set<AnyCancellable>()
         
         // When
-        interactor.fetchCards(faction: "") { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Fetching cards with empty faction succeeded unexpectedly")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
+        let cards: [Card]? = await withCheckedContinuation { continuation in
+            interactor.fetchCards(faction: "")
+                .sink(receiveCompletion: { completion in
+                    if case .failure = completion {
+                        continuation.resume(returning: nil)
+                    }
+                }, receiveValue: { resultCards in
+                    continuation.resume(returning: resultCards)
+                })
+                .store(in: &cancellables)
         }
         
-        wait(for: [expectation], timeout: 8.0)
-    }
-    
-    func testFetchCardsInvalidURL() {
-        // Given
-        let expectation = XCTestExpectation(description: "Fetching cards with invalid URL fails")
-        
-        // When
-        interactor.fetchCards(faction: "InvalidFaction") { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Fetching cards with invalid URL succeeded unexpectedly")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    
-    func testFetchCardsInvalidResponse() {
-        // Given
-        let expectation = XCTestExpectation(description: "Fetching cards with invalid response fails")
-        
-        // When
-        interactor.fetchCards(faction: "InvalidFaction") { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Fetching cards with invalid response succeeded unexpectedly")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
-    }
-    
-    func testFetchCardsNoData() {
-        // Given
-        let expectation = XCTestExpectation(description: "Fetching cards with no data fails")
-        
-        // When
-        interactor.fetchCards(faction: "InvalidFaction") { result in
-            // Then
-            switch result {
-            case .success:
-                XCTFail("Fetching cards with no data succeeded unexpectedly")
-            case .failure(let error):
-                XCTAssertNotNil(error)
-                expectation.fulfill()
-            }
-        }
-        
-        wait(for: [expectation], timeout: 5.0)
+        // Then
+        #expect(cards != nil)
+        #expect(cards?.isEmpty == false)
     }
 }
