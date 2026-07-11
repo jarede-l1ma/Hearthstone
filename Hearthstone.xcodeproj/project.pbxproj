@@ -35,7 +35,6 @@
 		F9A406752BB7671900644263 /* ImageHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A406742BB7671900644263 /* ImageHelper.swift */; };
 		F9A406772BB779EE00644263 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A406762BB779EE00644263 /* AlertHelper.swift */; };
 		F9A4067A2BB8DB5900644263 /* CardsProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A406792BB8DB5900644263 /* CardsProtocol.swift */; };
-		F9A4067C2BB8E23800644263 /* CardsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9A4067B2BB8E23800644263 /* CardsAPI.swift */; };
 		F9AD29382C0A730B00AC7590 /* ViewConfigurator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AD29372C0A730B00AC7590 /* ViewConfigurator.swift */; };
 		F9AD293A2C0A732400AC7590 /* ViewConfiguratorProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AD29392C0A732400AC7590 /* ViewConfiguratorProtocol.swift */; };
 		F9AD293C2C0A76BD00AC7590 /* ReusableIdentifierProtocolService.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9AD293B2C0A76BD00AC7590 /* ReusableIdentifierProtocolService.swift */; };
@@ -54,12 +53,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		0A7F0B4656FF49F8EEDAA88D /* CardsModuleBuilderTests.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = CardsModuleBuilderTests.swift; path = CardsModuleBuilderTests.swift; sourceTree = "<group>"; };
-		3872A82E8B829D5AC0360C59 /* CardsRouter.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = CardsRouter.swift; path = CardsRouter.swift; sourceTree = "<group>"; };
-		50D691AFA2CD85D4D533F8C5 /* String+HTML.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = "String+HTML.swift"; path = "String+HTML.swift"; sourceTree = "<group>"; };
-		75B4C5AAE8B2B7B271C2C510 /* CardsRouterTests.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = CardsRouterTests.swift; path = CardsRouterTests.swift; sourceTree = "<group>"; };
-		86A0B10183CC30A6B3957354 /* StringHTMLTests.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = StringHTMLTests.swift; path = StringHTMLTests.swift; sourceTree = "<group>"; };
-		98D9E8359FECD663ABEDB3D5 /* CardsModuleBuilder.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; lastKnownFileType = sourcecode.swift; name = CardsModuleBuilder.swift; path = CardsModuleBuilder.swift; sourceTree = "<group>"; };
+		0A7F0B4656FF49F8EEDAA88D /* CardsModuleBuilderTests.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = CardsModuleBuilderTests.swift; sourceTree = "<group>"; };
+		3872A82E8B829D5AC0360C59 /* CardsRouter.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = CardsRouter.swift; sourceTree = "<group>"; };
+		50D691AFA2CD85D4D533F8C5 /* String+HTML.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = "String+HTML.swift"; sourceTree = "<group>"; };
+		75B4C5AAE8B2B7B271C2C510 /* CardsRouterTests.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = CardsRouterTests.swift; sourceTree = "<group>"; };
+		86A0B10183CC30A6B3957354 /* StringHTMLTests.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = StringHTMLTests.swift; sourceTree = "<group>"; };
+		98D9E8359FECD663ABEDB3D5 /* CardsModuleBuilder.swift */ = {isa = PBXFileReference; explicitFileType = sourcecode.swift; path = CardsModuleBuilder.swift; sourceTree = "<group>"; };
 		F92A28BD2BBA2739000AD372 /* CardDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewController.swift; sourceTree = "<group>"; };
 		F92A28C32BBA3F87000AD372 /* HearthstoneTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HearthstoneTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F92A28CC2BBA3F98000AD372 /* CardDetailViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetailViewControllerTests.swift; sourceTree = "<group>"; };
@@ -86,7 +85,6 @@
 		F9A406742BB7671900644263 /* ImageHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageHelper.swift; sourceTree = "<group>"; };
 		F9A406762BB779EE00644263 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		F9A406792BB8DB5900644263 /* CardsProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsProtocol.swift; sourceTree = "<group>"; };
-		F9A4067B2BB8E23800644263 /* CardsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardsAPI.swift; sourceTree = "<group>"; };
 		F9AD29372C0A730B00AC7590 /* ViewConfigurator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfigurator.swift; sourceTree = "<group>"; };
 		F9AD29392C0A732400AC7590 /* ViewConfiguratorProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewConfiguratorProtocol.swift; sourceTree = "<group>"; };
 		F9AD293B2C0A76BD00AC7590 /* ReusableIdentifierProtocolService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReusableIdentifierProtocolService.swift; sourceTree = "<group>"; };
@@ -246,7 +244,6 @@
 		F9A4065C2BB7059900644263 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				F9A4067B2BB8E23800644263 /* CardsAPI.swift */,
 				F92A28ED2BBA644D000AD372 /* CardsService.swift */,
 			);
 			path = Service;
@@ -336,7 +333,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1520;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 2610;
 				TargetAttributes = {
 					F92A28C22BBA3F87000AD372 = {
 						CreatedOnToolsVersion = 15.2;
@@ -419,7 +416,6 @@
 				F9A406722BB75D4900644263 /* CardsPresenter.swift in Sources */,
 				F9A4067A2BB8DB5900644263 /* CardsProtocol.swift in Sources */,
 				F9A406772BB779EE00644263 /* AlertHelper.swift in Sources */,
-				F9A4067C2BB8E23800644263 /* CardsAPI.swift in Sources */,
 				F9A4066A2BB73CBB00644263 /* CardsViewController.swift in Sources */,
 				F9AD293C2C0A76BD00AC7590 /* ReusableIdentifierProtocolService.swift in Sources */,
 				F9AD293A2C0A732400AC7590 /* ViewConfiguratorProtocol.swift in Sources */,
@@ -460,7 +456,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YWYFHK9NS4;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaredelima.HearthstoneTests;
@@ -478,7 +473,6 @@
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YWYFHK9NS4;
 				GENERATE_INFOPLIST_FILE = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.jaredelima.HearthstoneTests;
@@ -525,6 +519,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YWYFHK9NS4;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -548,6 +543,7 @@
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -588,6 +584,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YWYFHK9NS4;
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
@@ -604,6 +601,7 @@
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				VALIDATE_PRODUCT = YES;
 			};
@@ -616,7 +614,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YWYFHK9NS4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hearthstone/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -649,7 +646,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = YWYFHK9NS4;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Hearthstone/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;

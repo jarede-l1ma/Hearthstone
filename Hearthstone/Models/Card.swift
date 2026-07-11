@@ -2,7 +2,7 @@ import Foundation
 
 //// MARK: - Card
 
-struct Card: Decodable {
+struct Card: Codable {
     let name: String?
     let img: String?
     let flavor: String?
@@ -61,6 +61,27 @@ struct Card: Decodable {
         self.attack = attack
         self.cost = cost
         self.health = health
+    }
+    
+    // MARK: - Encodable
+    
+    private enum EncodingKeys: String, CodingKey {
+        case name, img, flavor, text, cardSet, type, faction, rarity, attack, cost, health
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: EncodingKeys.self)
+        try container.encodeIfPresent(name, forKey: .name)
+        try container.encodeIfPresent(img, forKey: .img)
+        try container.encodeIfPresent(flavor, forKey: .flavor)
+        try container.encodeIfPresent(text, forKey: .text)
+        try container.encodeIfPresent(cardSet, forKey: .cardSet)
+        try container.encodeIfPresent(type, forKey: .type)
+        try container.encodeIfPresent(faction, forKey: .faction)
+        try container.encodeIfPresent(rarity, forKey: .rarity)
+        try container.encodeIfPresent(attack, forKey: .attack)
+        try container.encodeIfPresent(cost, forKey: .cost)
+        try container.encodeIfPresent(health, forKey: .health)
     }
 }
 

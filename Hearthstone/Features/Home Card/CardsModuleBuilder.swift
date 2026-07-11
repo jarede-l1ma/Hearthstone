@@ -1,6 +1,6 @@
 import UIKit
 
-struct CardsModuleBuilder {
+@MainActor struct CardsModuleBuilder {
     
     static func build() -> UIViewController {
         let service = CardsService()
