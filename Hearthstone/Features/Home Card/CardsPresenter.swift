@@ -1,16 +1,17 @@
 import Foundation
 import Combine
 
-final class CardsPresenter: CardsPresenterInterface {
+@MainActor final class CardsPresenter: CardsPresenterInterface {
     
     // MARK: - Properties
     var card: [Card] = []
     weak var view: CardsViewInterface?
     private var cancellable: AnyCancellable?
     var updateViewClosure: (() -> Void)?
-    let interactor: CardsInteractorInterface
+    var interactor: CardsInteractorInterface
     let router: CardsRouterInterface
     var currentFaction: String = "Alliance"
+    private var isLoadingNextPage = false
     
     // MARK: - Initializers
     init(view: CardsViewInterface? = nil, interactor: CardsInteractorInterface, router: CardsRouterInterface) {
@@ -39,8 +40,22 @@ final class CardsPresenter: CardsPresenterInterface {
         router.navigateToDetail(with: card)
     }
     
+    func scrolledToBottom() {
+        guard !isLoadingNextPage else { return }
+        isLoadingNextPage = true
+        
+        if let nextPage = interactor.loadNextPage(faction: currentFaction), !nextPage.isEmpty {
+            let startIndex = card.count
+            card.append(contentsOf: nextPage)
+            view?.appendCards(cards: card, startIndex: startIndex)
+        }
+        
+        isLoadingNextPage = false
+    }
+    
     private func fetchCards() {
         cancellable?.cancel()
+        interactor.resetPagination()
         
         cancellable = interactor.fetchCards(faction: currentFaction)
             .receive(on: DispatchQueue.main)
@@ -54,7 +69,11 @@ final class CardsPresenter: CardsPresenterInterface {
                 }
             }, receiveValue: { [weak self] cards in
                 guard let self else { return }
-                self.view?.updateCards(cards: cards)
+                // Deliver first page, seed paginator with full list
+                let firstPage = Array(cards.prefix(CardsInteractor.pageSize))
+                self.card = firstPage
+                self.interactor.setFullCardList(cards)
+                self.view?.updateCards(cards: firstPage)
             })
     }
 }

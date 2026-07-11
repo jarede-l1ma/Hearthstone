@@ -169,7 +169,6 @@ final class CardDetailViewController: UIViewController {
         nameLabel.text = card.name
         
         // Define common colors
-        let goldColor = UIColor(red: 244/255, green: 196/255, blue: 48/255, alpha: 1.0)
         let lightColor = UIColor(red: 230/255, green: 220/255, blue: 210/255, alpha: 1.0)
         let secondaryGold = UIColor(red: 218/255, green: 165/255, blue: 32/255, alpha: 0.8)
         

@@ -7,10 +7,15 @@ import Foundation
 
     class MockCardsView: CardsViewInterface {
         var updateCardsCalled = false
+        var appendCardsCalled = false
         var showErrorCalled = false
         
         func updateCards(cards: [Card]) {
             updateCardsCalled = true
+        }
+        
+        func appendCards(cards: [Card], startIndex: Int) {
+            appendCardsCalled = true
         }
         
         func showError(error: Error) {
@@ -27,6 +32,17 @@ import Foundation
         
         // Then
         #expect(mockView.updateCardsCalled)
+    }
+    
+    @Test func appendCards_WhenCalled_ShouldSetAppendCardsCalledToTrue() {
+        // Given
+        let mockView = MockCardsView()
+        
+        // When
+        mockView.appendCards(cards: [], startIndex: 0)
+        
+        // Then
+        #expect(mockView.appendCardsCalled)
     }
     
     @Test func showError_WhenCalled_ShouldSetShowErrorCalledToTrue() {
@@ -49,14 +65,18 @@ import Foundation
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
+        func loadNextPage(faction: String) -> [Card]? { return nil }
+        func resetPagination() {}
+        func setFullCardList(_ cards: [Card]) {}
     }
 
     class MockCardsView: CardsViewInterface {
         func updateCards(cards: [Hearthstone.Card]) {}
+        func appendCards(cards: [Card], startIndex: Int) {}
         func showError(error: Error) {}
     }
     
-    class MockCardsRouter: CardsRouterInterface {
+    @MainActor class MockCardsRouter: CardsRouterInterface {
         func navigateToDetail(with card: Card) {}
     }
 
@@ -91,6 +111,9 @@ import Foundation
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
+        func loadNextPage(faction: String) -> [Card]? { return nil }
+        func resetPagination() {}
+        func setFullCardList(_ cards: [Card]) {}
     }
 
     @Test func fetchCards_WhenCalled_ShouldNotCrash() {

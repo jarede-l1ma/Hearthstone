@@ -26,7 +26,7 @@ struct CardsInteractorTests {
         // Then
         #expect(cards != nil)
         #expect(cards?.isEmpty == false)
-        #expect(cards?.first?.faction == "Alliance")
+        #expect(cards?.first?.faction == "Alliance".uppercased())
     }
     
     @Test func fetchCardsFailure_ReturnsFallbackData() async {

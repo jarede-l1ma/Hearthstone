@@ -1,10 +1,10 @@
 import UIKit
 
-protocol CardsRouterInterface {
+@MainActor protocol CardsRouterInterface {
     func navigateToDetail(with card: Card)
 }
 
-struct CardsRouter: CardsRouterInterface {
+@MainActor struct CardsRouter: CardsRouterInterface {
     
     // MARK: - Properties
     weak var viewController: UIViewController?

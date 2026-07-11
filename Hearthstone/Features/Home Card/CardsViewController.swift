@@ -99,10 +99,14 @@ extension CardsViewController {
 //MARK: - View Update
 extension CardsViewController: CardsViewInterface {
     func updateCards(cards: [Card]) {
-        DispatchQueue.main.async {
-            self.presenter?.card = cards
-            self.activity.stopAnimating()
-            self.tableView.reloadData()
+        activity.stopAnimating()
+        tableView.reloadData()
+    }
+    
+    func appendCards(cards: [Card], startIndex: Int) {
+        let indexPaths = (startIndex..<cards.count).map { IndexPath(row: $0, section: 0) }
+        tableView.performBatchUpdates {
+            tableView.insertRows(at: indexPaths, with: .fade)
         }
     }
     
@@ -130,6 +134,13 @@ extension CardsViewController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let selectedCard = presenter?.card[indexPath.row] {
             presenter?.didSelectCard(selectedCard)
+        }
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+        let totalCards = presenter?.card.count ?? 0
+        if indexPath.row >= totalCards - 5 {
+            presenter?.scrolledToBottom()
         }
     }
 }
